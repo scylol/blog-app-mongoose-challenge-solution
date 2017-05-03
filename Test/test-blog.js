@@ -141,6 +141,27 @@ describe('Restaurants API resource', function() {
         });
     });
   });
-    
+    describe('PUT endpoint', function(){
+      it.only('should update and return the item who\'s ID was passed in through params', function(){
+        let randomItem = generateBlogData();
+        let dbItem;
+        return BlogPost
+        .findOne({})
+        .then(result => {
+          dbItem = result;
+          randomItem.id = result.id;
+          return chai.request(app)
+          .put(`/posts/${result.id}`)
+          .send(randomItem);
+        })
+        .then(result =>{
+          result.body.id.should.equal(dbItem.id);
+          result.body.title.should.equal(randomItem.title);
+          result.body.content.should.equal(randomItem.content);
+          result.body.author.should.equal(`${randomItem.author.firstName} ${randomItem.author.lastName}`);
+          // result.body.author.lastName.should.equal(dbItem.author.lastName);
+        })
+      })
+    })
 
 }); // End of parent describe
