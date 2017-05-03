@@ -96,9 +96,30 @@ describe('Restaurants API resource', function() {
         res.content.should.equal(post.content);
       });
     });
+    it('should return only the item corresponding to the ID in the parameters', function(){
+      let res;
+      return BlogPost
+      .findOne({})
+      .then(result =>{
+        res = result;
+        return chai.request(app)
+        .get(`/posts/${res.id}`);
+      })
+      .then(post =>{
+        res.id.should.equal(post.body.id);
+        res.title.should.equal(post.body.title);
+        res.authorName.should.equal(post.body.author);
+        res.content.should.equal(post.body.content);
+
+      });
+    });
+
+
   });
 
+  describe('POST endpoint', function(){
 
+  });
     
 
 }); // End of parent describe
