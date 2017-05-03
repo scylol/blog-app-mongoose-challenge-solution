@@ -72,7 +72,7 @@ describe('Restaurants API resource', function() {
       .then(count => res.body.should.have.length.of(count));
     });
 
-    it('should return items with all the correct fields', function(){
+    it.only('should return items with all the correct fields', function(){
       let res;
       return chai.request(app)
       .get('/posts')
@@ -90,6 +90,8 @@ describe('Restaurants API resource', function() {
         return BlogPost.findById(res.id);
       })
       .then(post => {
+        console.log(res);
+        console.log(post);
         res.id.should.equal(post.id);
         res.title.should.equal(post.title);
         res.author.should.equal(post.authorName);
@@ -141,11 +143,11 @@ describe('Restaurants API resource', function() {
         });
     });
   });
-    describe('PUT endpoint', function(){
-      it.only('should update and return the item who\'s ID was passed in through params', function(){
-        let randomItem = generateBlogData();
-        let dbItem;
-        return BlogPost
+  describe('PUT endpoint', function(){
+    it('should update and return the item who\'s ID was passed in through params', function(){
+      let randomItem = generateBlogData();
+      let dbItem;
+      return BlogPost
         .findOne({})
         .then(result => {
           dbItem = result;
@@ -159,9 +161,29 @@ describe('Restaurants API resource', function() {
           result.body.title.should.equal(randomItem.title);
           result.body.content.should.equal(randomItem.content);
           result.body.author.should.equal(`${randomItem.author.firstName} ${randomItem.author.lastName}`);
-          // result.body.author.lastName.should.equal(dbItem.author.lastName);
+        });
+    });
+  });
+
+  describe('DELETE endpoint', function(){
+    it('Should Delete item by ID which was passed in through params', function() {
+      let post;
+      return BlogPost
+        .findOne()
+        .then(result => {
+          post = result;
+          return chai.request(app)
+          .delete(`/posts/${post.id}`);
         })
-      })
-    })
+        .then(result => {
+          result.should.have.status(204);
+          return BlogPost.findById(post.id);
+        })
+        .then(result => {
+          should.not.exist(result);
+        });
+
+    });
+  });
 
 }); // End of parent describe
