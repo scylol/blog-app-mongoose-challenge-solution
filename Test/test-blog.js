@@ -10,7 +10,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 function seedBlogData() {
-  console.info('seeding restaurant data');
+  console.info('seeding blog data');
   const seedData = [];
 
   for (let i=1; i<=10; i++) {
@@ -36,7 +36,7 @@ function tearDownDb() {
   return mongoose.connection.dropDatabase();
 }
 
-describe('Restaurants API resource', function() {
+describe('Blogs API resource', function() {
 
   before(function() {
     return runServer(TEST_DATABASE_URL);
