@@ -118,7 +118,28 @@ describe('Restaurants API resource', function() {
   });
 
   describe('POST endpoint', function(){
+    it('should add a new post', function() {
+      const newPost = generateBlogData();
+        
+      return chai.request(app)
+        .post('/posts')
+        .send(newPost)
+        .then(result => {
+          result.should.have.status(201);
+          result.should.be.json;
+          result.should.be.a('object');
+          result.body.should.include.keys('id', 'title', 'author', 'content');
+          result.body.id.should.not.be.null;
 
+          return BlogPost.findById(result.body.id);
+        })
+        .then(post => {
+          post.title.should.equal(newPost.title);
+          post.content.should.equal(newPost.content);
+          post.author.firstName.should.equal(newPost.author.firstName);
+          post.author.lastName.should.equal(newPost.author.lastName);
+        });
+    });
   });
     
 
