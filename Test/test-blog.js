@@ -71,4 +71,4 @@ describe("GET endpoints", function(){
   })
 })
 
-}); // End of first describe
+}); // End of parent describe
