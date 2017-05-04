@@ -72,7 +72,7 @@ describe('Blogs API resource', function() {
       .then(count => res.body.should.have.length.of(count));
     });
 
-    it.only('should return items with all the correct fields', function(){
+    it('should return items with all the correct fields', function(){
       let res;
       return chai.request(app)
       .get('/posts')
